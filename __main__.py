@@ -56,6 +56,10 @@ def resolve_items_to_import(source_folder_absolute_display_name, source_shell_it
 
 def should_copy(amended_file_path,already_imported_files_set, destination_path_str):
     # Check if it exists
+
+    # if amended_file_path.__contains__('202401'):
+    #     print("Found " + amended_file_path)
+
     file_to_check = destination_path_str + "\\" + amended_file_path
     if os.path.isfile(file_to_check):
         print("Skipping -> " + file_to_check)
