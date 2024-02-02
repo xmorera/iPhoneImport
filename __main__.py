@@ -58,6 +58,7 @@ def should_copy(amended_file_path,already_imported_files_set, destination_path_s
     # Check if it exists
     file_to_check = destination_path_str + "\\" + amended_file_path
     if os.path.isfile(file_to_check):
+        print("Skipping -> " + file_to_check)
         return False
 
     # Check if it has already been copied
@@ -126,7 +127,17 @@ def main(args):
         print(f"Nothing to copy")
 
     if len(imported_file_set) > 0:
-        write_imported_file_list_to_metadata_folder(args.metadata_folder, imported_file_set)
+        metadata = ""
+        if args.metadata_folder is None:
+            metadata = destination_path_str + "\\metadata"
+        else:
+            metadata = args.metadata_folder
+
+        if not os.path.exists(metadata):
+            # Create the directory
+            os.makedirs(metadata)
+
+        write_imported_file_list_to_metadata_folder(metadata, imported_file_set)
 
 
 if __name__ == "__main__":
