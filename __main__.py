@@ -36,7 +36,7 @@ def load_already_imported_file_names(metadata_folder):
 
 # Resolves which files to import
 def resolve_items_to_import(source_folder_absolute_display_name, source_shell_items_by_path,
-                            already_imported_files_set):
+                            already_imported_files_set, destination_path_str):
     imported_file_set = set()
     not_imported_file_set = set()
     shell_items_to_copy = {}
@@ -46,12 +46,24 @@ def resolve_items_to_import(source_folder_absolute_display_name, source_shell_it
         file_relative_path = remove_prefix(source_file_absolute_path, source_folder_absolute_display_name)
         file_relative_path = remove_prefix(file_relative_path, '\\')
         amended_file_path = remove_letter_suffix_from_folder(file_relative_path)
-        if amended_file_path not in already_imported_files_set:
+        if should_copy(amended_file_path, already_imported_files_set, destination_path_str):
             shell_items_to_copy[file_relative_path] = source_file_shell_item
             imported_file_set.add(amended_file_path)
         else:
             not_imported_file_set.add(file_relative_path)
     return imported_file_set, not_imported_file_set, shell_items_to_copy
+
+
+def should_copy(amended_file_path,already_imported_files_set, destination_path_str):
+    # Check if it exists
+    if os.path.isfile(destination_path_str + "\\" + amended_file_path):
+        return False
+
+    # Check if it has already been copied
+    if amended_file_path not in already_imported_files_set:
+        return False
+    
+    return True
 
 
 def remove_prefix(str, prefix):
@@ -101,7 +113,7 @@ def main(args):
     source_shell_items_by_path = win32utils.walk_dcim(source_folder_shell_folder)
 
     imported_file_set, not_imported_file_set, shell_items_to_copy_by_target_path = resolve_items_to_import(
-        source_folder_absolute_display_name, source_shell_items_by_path, already_imported_files_set)
+        source_folder_absolute_display_name, source_shell_items_by_path, already_imported_files_set, destination_path_str)
 
     print(f"Import {len(imported_file_set)} files")
 
