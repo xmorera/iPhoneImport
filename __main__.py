@@ -56,14 +56,15 @@ def resolve_items_to_import(source_folder_absolute_display_name, source_shell_it
 
 def should_copy(amended_file_path,already_imported_files_set, destination_path_str):
     # Check if it exists
-    if os.path.isfile(destination_path_str + "\\" + amended_file_path):
+    file_to_check = destination_path_str + "\\" + amended_file_path
+    if os.path.isfile(file_to_check):
         return False
 
     # Check if it has already been copied
     if amended_file_path not in already_imported_files_set:
-        return False
+        return True
     
-    return True
+    return False
 
 
 def remove_prefix(str, prefix):
