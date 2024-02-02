@@ -28,7 +28,7 @@ commands:
 
 Copy **all files** from the phone to a folder:
 
-    python C:\Scripts\iPhoneImport "This PC\Apple iPhone\Internal Storage" "C:\Pictures\iPhone\import"
+    python C:\Scripts\iPhoneImport "This PC\Apple iPhone\Internal Storage" "C:\ImportPixs"
 
 Copy **new** files from the phone to a folder (i.e. skip the ones already copied):
 
