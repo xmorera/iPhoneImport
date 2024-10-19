@@ -1,3 +1,4 @@
 **/.idea/*
 iienv/ 
 iivenv/*
+__pycache__/win32utils.cpython-312.pyc
