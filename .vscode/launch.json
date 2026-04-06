@@ -13,8 +13,8 @@
             "args": [
                 "This PC\\Apple iPhone\\Internal Storage",              // 'source' argument
                 "C:\\iPhoneImport",         // 'destination' argument
-                "--metadata-folder", "C:\\iPhoneImport\\import\\metadata",  // optional --metadata-folder
-                "--skip-copy"                // optional flag --skip-copy
+                "--metadata-folder", "C:\\temp\\importmetadata",  // optional --metadata-folder
+                //"--skip-copy"                // optional flag --skip-copy
             ]
         }
     ]
