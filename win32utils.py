@@ -48,17 +48,32 @@ def get_shell_item_from_path(path):
 def walk_dcim(shell_folder):
     result = {}
 
+    print("Enumerating subfolders...", flush=True)
     for folder_pidl in shell_folder.EnumObjects(0, shellcon.SHCONTF_FOLDERS):
         child_shell_folder = shell_folder.BindToObject(folder_pidl, None, shell.IID_IShellFolder)
         name = shell_folder.GetDisplayNameOf(folder_pidl, shellcon.SHGDN_FORADDRESSBAR)
-        print(f"Listing folder '{name}'")
+        print(f"Listing folder '{name}'", flush=True)
         result |= walk_dcim(child_shell_folder)
 
-    for file_pidl in shell_folder.EnumObjects(0, shellcon.SHCONTF_NONFOLDERS):
-        sourcefolder_pidl = shell.SHGetIDListFromObject(shell_folder)
+    print("Enumerating files in this folder...", flush=True)
+    sourcefolder_pidl = shell.SHGetIDListFromObject(shell_folder)
+    print("  got folder pidl, calling EnumObjects(NONFOLDERS)...", flush=True)
+    file_enum = shell_folder.EnumObjects(0, shellcon.SHCONTF_NONFOLDERS)
+    print("  got file enumerator, iterating...", flush=True)
+    count = 0
+    for file_pidl in file_enum:
+        if count < 3:
+            print(f"  file #{count}: SHCreateShellItem...", flush=True)
         sourcefile_shell_item = shell.SHCreateShellItem(sourcefolder_pidl, None, file_pidl)
+        if count < 3:
+            print(f"  file #{count}: get_absolute_name...", flush=True)
         sourcefile_name = get_absolute_name(sourcefile_shell_item)
+        if count < 3:
+            print(f"  file #{count}: '{sourcefile_name}'", flush=True)
         result[sourcefile_name] = sourcefile_shell_item
+        count += 1
+        if count % 50 == 0:
+            print(f"  ...{count} files listed", flush=True)
 
     return result
 
