@@ -5,6 +5,7 @@ import pathlib
 import re
 from datetime import datetime
 
+import pythoncom
 import win32utils
 from win32utils import CopyParams
 
@@ -89,6 +90,10 @@ def write_imported_file_list_to_metadata_folder(metadata_folder, file_path_set):
 
 def main(args):
     print(f"Program args: {args.__dict__}")
+
+    # iPhone/MTP access goes through Windows Shell COM, which needs an
+    # initialized single-threaded apartment to talk to the device.
+    pythoncom.CoInitialize()
 
     source_folder_absolute_display_name = args.source
     destination_path_str = args.destination
