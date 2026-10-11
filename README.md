@@ -37,3 +37,21 @@ Copy **new** files from the phone to a folder (i.e. skip the ones already copied
 **Dry-run** mode: skip copying, write metadata only
 
     python C:\Scripts\iPhoneImport "This PC\Apple iPhone\Internal Storage" "C:\Pictures\iPhone\import" --metadata-folder d:\Pictures\iPhone\import\metadata --skip-copy
+
+## Picking this up on another machine
+
+Windows only (it uses the Windows Shell COM APIs).
+
+    git clone https://github.com/xmorera/iPhoneImport.git
+    cd iPhoneImport
+    python -m venv iivenv
+    iivenv\Scripts\activate
+    pip install -r requirements.txt
+
+Already cloned? Just update it:
+
+    git pull origin main
+
+Then plug in the iPhone, unlock it and tap "Trust", and run the script as described in "How to use" above. The metadata
+folder is not in git, so point `--metadata-folder` at the same synced location (e.g. a Dropbox folder) on every machine,
+otherwise files will be imported again.
